@@ -1,0 +1,164 @@
+"use client";
+
+import Image from "next/image";
+import { 
+  FaGithub, 
+  FaSnapchat, 
+  FaDiscord,
+  FaEnvelope,
+  FaLinkedin,
+  FaTwitter,
+  FaInstagram
+} from "react-icons/fa";
+import { useState, useEffect } from "react";
+import { BsMoonFill, BsSunFill } from "react-icons/bs";
+
+const links = [
+  {
+    title: "GitHub",
+    url: "https://github.com/kilianbalaguer",
+    icon: FaGithub,
+    description: "Check out my code"
+  },
+  {
+    title: "Snapchat",
+    url: "https://snapchat.com/add/itskilian007",
+    icon: FaSnapchat,
+    description: "Add me on Snap"
+  },
+  {
+    title: "Instagram",
+    url: "https://instagram.com/itskilian007",
+    icon: FaInstagram,
+    description: "Daily life"
+  },
+  {
+    title: "Email",
+    url: "mailto:kilianbalaguer2010@icloud.com",
+    icon: FaEnvelope,
+    description: "Send me an email"
+  },
+  {
+    title: "Discord",
+    url: "#",
+    icon: FaDiscord,
+    description: "Coming Soon"
+  },
+  {
+    title: "LinkedIn",
+    url: "#",
+    icon: FaLinkedin,
+    description: "Coming Soon"
+  },
+  {
+    title: "Twitter",
+    url: "#",
+    icon: FaTwitter,
+    description: "Coming Soon"
+  }
+];
+
+export default function Home() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const initialTheme = savedTheme || systemTheme;
+    setTheme(initialTheme);
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+    document.documentElement.classList.toggle('dark');
+  };
+
+  return (
+    <main className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl py-12">
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="fixed top-6 right-6 p-3 bg-black dark:bg-white text-white dark:text-black hover:scale-110 transition-transform"
+          aria-label="Toggle theme"
+        >
+          {theme === 'light' ? <BsMoonFill size={20} /> : <BsSunFill size={20} />}
+        </button>
+
+        {/* Profile Section */}
+        <div className="text-center mb-12">
+          <div className="relative w-32 h-32 mx-auto mb-6">
+            <div className="absolute inset-0 border-4 border-black dark:border-white translate-x-2 translate-y-2 transition-all duration-300" />
+            <div className="relative w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-4xl font-black border-4 border-black dark:border-white">
+              KB
+            </div>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-black mb-3">
+            Kilian Balaguer
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
+            Full-Stack Developer
+          </p>
+          <div className="inline-block mt-4 px-4 py-1 bg-black dark:bg-white text-white dark:text-black text-sm font-mono">
+            @kilianbalaguer
+          </div>
+        </div>
+
+        {/* Links Section */}
+        <div className="space-y-4">
+          {links.map((link, index) => {
+            const Icon = link.icon;
+            const isComingSoon = link.url === "#";
+            return (
+              <a
+                key={index}
+                href={link.url}
+                target={isComingSoon ? undefined : "_blank"}
+                rel={isComingSoon ? undefined : "noopener noreferrer"}
+                className={`group block relative ${isComingSoon ? 'cursor-not-allowed opacity-60' : ''}`}
+                onClick={(e) => {
+                  if (isComingSoon) {
+                    e.preventDefault();
+                  }
+                }}
+              >
+                <div className="absolute inset-0 bg-black dark:bg-white translate-x-2 translate-y-2 group-hover:translate-x-3 group-hover:translate-y-3 transition-all duration-300" />
+                <div className="relative border-4 border-black dark:border-white bg-white dark:bg-black p-6 group-hover:-translate-x-1 group-hover:-translate-y-1 transition-all duration-300">
+                  <div className="flex items-center gap-4">
+                    <Icon className="text-3xl flex-shrink-0" />
+                    <div className="flex-1 text-left">
+                      <h3 className="text-xl font-black">{link.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {link.description}
+                      </p>
+                    </div>
+                    <svg
+                      className="w-6 h-6 flex-shrink-0 group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={3}
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-12 text-sm text-gray-600 dark:text-gray-400">
+          <p className="font-mono">© 2026 Kilian Balaguer</p>
+        </div>
+      </div>
+    </main>
+  );
+}
