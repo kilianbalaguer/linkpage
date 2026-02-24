@@ -10,8 +10,6 @@ import {
   FaTwitter,
   FaInstagram
 } from "react-icons/fa";
-import { useState, useEffect } from "react";
-import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import Header from "@/components/header";
 
 const links = [
@@ -60,15 +58,6 @@ const links = [
 ];
 
 export default function Home() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme') as 'light' | 'dark' | null;
-    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const initialTheme = savedTheme || systemTheme;
-    setTheme(initialTheme);
-  }, []);
-
   return (
     <>
       <Header />
@@ -78,9 +67,15 @@ export default function Home() {
           <div className="text-center mb-12">
           <div className="relative w-32 h-32 mx-auto mb-6">
             <div className="absolute inset-0 border-4 border-black dark:border-white translate-x-2 translate-y-2 transition-all duration-300" />
-            <div className="relative w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-4xl font-black border-4 border-black dark:border-white">
-              KB
-            </div>
+            <Image
+              src="/KilianBalaguer.JPEG"
+              alt="Kilian Balaguer"
+              width={128}
+              height={128}
+              quality={95}
+              priority
+              className="relative w-full h-full object-cover border-4 border-black dark:border-white grayscale hover:grayscale-0 transition-all duration-300"
+            />
           </div>
           <h1 className="text-4xl sm:text-5xl font-black mb-3">
             Kilian Balaguer

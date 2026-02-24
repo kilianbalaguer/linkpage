@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BsSun, BsMoon, BsArrowRight } from "react-icons/bs";
 
 export default function Header() {
@@ -9,8 +9,24 @@ export default function Header() {
 
   useEffect(() => {
     setMounted(true);
-    setIsDark(document.documentElement.classList.contains("dark"));
+    const updateThemeState = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+    updateThemeState();
+
+    const observer = new MutationObserver(updateThemeState);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => observer.disconnect();
   }, []);
+
+  const headerThemeClasses = useMemo(
+    () => (isDark ? "bg-black/80 border-white" : "bg-white/80 border-black"),
+    [isDark]
+  );
 
   const toggleTheme = () => {
     if (!document.documentElement.classList.contains("dark")) {
@@ -28,7 +44,7 @@ export default function Header() {
 
   return (
     <header className="z-[999] relative">
-      <div className="fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-2 border-black dark:border-white max-w-7xl mx-auto transition-all duration-300">
+      <div className={`fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 ${headerThemeClasses} backdrop-blur-sm border-b-2 max-w-7xl mx-auto transition-all duration-300`}>
         <nav className="h-full px-4 sm:px-8 flex items-center justify-between">
           <div className="text-2xl font-black">KB</div>
           
