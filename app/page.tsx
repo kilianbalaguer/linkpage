@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
+import Header from "@/components/header";
 
 const links = [
   {
@@ -68,27 +69,13 @@ export default function Home() {
     setTheme(initialTheme);
   }, []);
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
-    localStorage.setItem('theme', newTheme);
-    document.documentElement.classList.toggle('dark');
-  };
-
   return (
-    <main className="min-h-screen flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl py-12">
-        {/* Theme Toggle */}
-        <button
-          onClick={toggleTheme}
-          className="fixed top-6 right-6 p-3 bg-black dark:bg-white text-white dark:text-black hover:scale-110 transition-transform"
-          aria-label="Toggle theme"
-        >
-          {theme === 'light' ? <BsMoonFill size={20} /> : <BsSunFill size={20} />}
-        </button>
-
-        {/* Profile Section */}
-        <div className="text-center mb-12">
+    <>
+      <Header />
+      <main className="min-h-screen flex items-center justify-center p-4 mt-20">
+        <div className="w-full max-w-2xl py-12">
+          {/* Profile Section */}
+          <div className="text-center mb-12">
           <div className="relative w-32 h-32 mx-auto mb-6">
             <div className="absolute inset-0 border-4 border-black dark:border-white translate-x-2 translate-y-2 transition-all duration-300" />
             <div className="relative w-full h-full bg-gray-200 dark:bg-gray-800 flex items-center justify-center text-4xl font-black border-4 border-black dark:border-white">
@@ -160,5 +147,6 @@ export default function Home() {
         </div>
       </div>
     </main>
+    </>
   );
 }
