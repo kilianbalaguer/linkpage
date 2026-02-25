@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, createContext, useContext, useEffect } from "react";
 
 type Language = "en" | "fr" | "ar" | "nl" | "de" | "es" | "ko";
 
@@ -17,6 +17,31 @@ export default function LanguageContextProvider({
   children: React.ReactNode;
 }) {
   const [language, setLanguage] = useState<Language>("en");
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Load language from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedLanguage = localStorage.getItem("language") as Language | null;
+      if (savedLanguage && ["en", "fr", "ar", "nl", "de", "es", "ko"].includes(savedLanguage)) {
+        setLanguage(savedLanguage);
+      }
+    } catch (error) {
+      console.error("Failed to load language from localStorage:", error);
+    }
+    setIsLoaded(true);
+  }, []);
+
+  // Save language to localStorage when it changes
+  useEffect(() => {
+    if (isLoaded) {
+      try {
+        localStorage.setItem("language", language);
+      } catch (error) {
+        console.error("Failed to save language to localStorage:", error);
+      }
+    }
+  }, [language, isLoaded]);
 
   return (
     <LanguageContext.Provider

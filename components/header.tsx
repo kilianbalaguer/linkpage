@@ -3,8 +3,12 @@
 import { useState } from "react";
 import { BsArrowRight } from "react-icons/bs";
 import LanguageSwitch from "./language-switch";
+import { useLanguage } from "@/context/language-context";
+import { translations } from "@/lib/translations";
 
 export default function Header() {
+  const { language } = useLanguage();
+  const t = translations[language];
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -18,13 +22,13 @@ export default function Header() {
               href="https://kilianbalaguer-portfolio.vercel.app"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all inline-flex items-center gap-1"
             >
-              Portfolio <BsArrowRight className="text-xs" />
+              {t.portfolio} <BsArrowRight className="text-xs" />
             </a>
             <a
               href="https://kilianbalaguer-blog.vercel.app"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all inline-flex items-center gap-1"
             >
-              Blog <BsArrowRight className="text-xs" />
+              {t.blog} <BsArrowRight className="text-xs" />
             </a>
             <LanguageSwitch />
           </div>
@@ -69,7 +73,7 @@ export default function Header() {
                   className="block text-2xl font-black hover:translate-x-2 transition-transform"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Portfolio <BsArrowRight className="inline text-base" />
+                  {t.portfolio} <BsArrowRight className="inline text-base" />
                 </a>
               </li>
               <li>
@@ -78,7 +82,7 @@ export default function Header() {
                   className="block text-2xl font-black hover:translate-x-2 transition-transform"
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Blog <BsArrowRight className="inline text-base" />
+                  {t.blog} <BsArrowRight className="inline text-base" />
                 </a>
               </li>
             </ul>

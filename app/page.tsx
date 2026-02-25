@@ -11,53 +11,57 @@ import {
   FaInstagram
 } from "react-icons/fa";
 import Header from "@/components/header";
-
-const links = [
-  {
-    title: "GitHub",
-    url: "https://github.com/kilianbalaguer",
-    icon: FaGithub,
-    description: "Check out my code"
-  },
-  {
-    title: "Snapchat",
-    url: "https://snapchat.com/add/itskilian007",
-    icon: FaSnapchat,
-    description: "Add me on Snap"
-  },
-  {
-    title: "Instagram",
-    url: "https://instagram.com/itskilian007",
-    icon: FaInstagram,
-    description: "Daily life"
-  },
-  {
-    title: "Email",
-    url: "mailto:kilianbalaguer2010@icloud.com",
-    icon: FaEnvelope,
-    description: "Send me an email"
-  },
-  {
-    title: "Discord",
-    url: "#",
-    icon: FaDiscord,
-    description: "Coming Soon"
-  },
-  {
-    title: "LinkedIn",
-    url: "#",
-    icon: FaLinkedin,
-    description: "Coming Soon"
-  },
-  {
-    title: "Twitter",
-    url: "#",
-    icon: FaTwitter,
-    description: "Coming Soon"
-  }
-];
+import { useLanguage } from "@/context/language-context";
+import { translations } from "@/lib/translations";
 
 export default function Home() {
+  const { language } = useLanguage();
+  const t = translations[language];
+
+  const links = [
+    {
+      title: "GitHub",
+      url: "https://github.com/kilianbalaguer",
+      icon: FaGithub,
+      description: t.checkOutCode
+    },
+    {
+      title: "Snapchat",
+      url: "https://snapchat.com/add/itskilian007",
+      icon: FaSnapchat,
+      description: t.addMeSnap
+    },
+    {
+      title: "Instagram",
+      url: "https://instagram.com/itskilian007",
+      icon: FaInstagram,
+      description: t.dailyLife
+    },
+    {
+      title: "Email",
+      url: "mailto:kilianbalaguer2010@icloud.com",
+      icon: FaEnvelope,
+      description: t.sendEmail
+    },
+    {
+      title: "Discord",
+      url: "#",
+      icon: FaDiscord,
+      description: t.comingSoon
+    },
+    {
+      title: "LinkedIn",
+      url: "#",
+      icon: FaLinkedin,
+      description: t.comingSoon
+    },
+    {
+      title: "Twitter",
+      url: "#",
+      icon: FaTwitter,
+      description: t.comingSoon
+    }
+  ];
   return (
     <>
       <Header />
@@ -81,7 +85,7 @@ export default function Home() {
             Kilian Balaguer
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
-            Full-Stack Developer
+            {t.developer}
           </p>
           <div className="inline-block mt-4 px-4 py-1 bg-black dark:bg-white text-white dark:text-black text-sm font-mono">
             @kilianbalaguer
@@ -138,7 +142,7 @@ export default function Home() {
 
         {/* Footer */}
         <div className="text-center mt-12 text-sm text-gray-600 dark:text-gray-400">
-          <p className="font-mono">© 2026 Kilian Balaguer</p>
+          <p className="font-mono">{t.allRightsReserved}</p>
         </div>
       </div>
     </main>
