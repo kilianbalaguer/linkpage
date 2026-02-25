@@ -1,54 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { BsSun, BsMoon, BsArrowRight } from "react-icons/bs";
+import { useState } from "react";
+import { BsArrowRight } from "react-icons/bs";
+import LanguageSwitch from "./language-switch";
 
 export default function Header() {
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const updateThemeState = () => {
-      setIsDark(document.documentElement.classList.contains("dark"));
-    };
-    updateThemeState();
-
-    const observer = new MutationObserver(updateThemeState);
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  const headerThemeClasses = useMemo(
-    () => (isDark ? "bg-black/80 border-white" : "bg-white/80 border-black"),
-    [isDark]
-  );
-
-  const toggleTheme = () => {
-    if (!document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDark(false);
-    }
-  };
-
-  if (!mounted) return null;
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <header className="z-[999] relative">
-      <div className={`fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 ${headerThemeClasses} backdrop-blur-sm border-b-2 max-w-7xl mx-auto transition-all duration-300`}>
+      <div className="fixed top-4 left-4 right-4 sm:top-6 sm:left-6 sm:right-6 h-16 bg-white/80 dark:bg-black/80 backdrop-blur-sm border-b-2 border-black dark:border-white max-w-7xl mx-auto transition-all duration-300">
         <nav className="h-full px-4 sm:px-8 flex items-center justify-between">
           <div className="text-2xl font-black">KB</div>
           
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-3">
             <a
               href="https://kilianbalaguer-portfolio.vercel.app"
               className="px-4 py-2 text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-all inline-flex items-center gap-1"
@@ -61,16 +26,65 @@ export default function Header() {
             >
               Blog <BsArrowRight className="text-xs" />
             </a>
+            <LanguageSwitch />
+          </div>
+
+          <div className="md:hidden flex items-center gap-2">
+            <LanguageSwitch />
             <button
-              onClick={toggleTheme}
-              aria-label="Toggle theme"
-              className="w-10 h-10 bg-white dark:bg-black border-2 border-black dark:border-white md:hover:bg-black md:hover:text-white md:dark:hover:bg-white md:dark:hover:text-black active:scale-95 transition-all flex items-center justify-center"
+              type="button"
+              className="w-10 h-10 bg-white dark:bg-black border-2 border-black dark:border-white md:hover:bg-black md:hover:text-white md:dark:hover:bg-white md:dark:hover:text-black active:scale-95 transition-all font-medium flex items-center justify-center touch-manipulation"
+              aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen((open) => !open)}
             >
-              {isDark ? <BsSun className="text-lg" /> : <BsMoon className="text-lg" />}
+              <span className="text-xl font-black leading-none">☰</span>
             </button>
           </div>
         </nav>
       </div>
+
+      {isMenuOpen && (
+        <div className="fixed inset-0 z-[998] bg-white/95 dark:bg-black/95 backdrop-blur-sm p-6 md:hidden">
+          <div className="max-w-2xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <div className="text-2xl font-black">KB</div>
+              <button
+                type="button"
+                onClick={(e) => {
+                  setIsMenuOpen(false);
+                  e.currentTarget.blur();
+                }}
+                aria-label="Close menu"
+                className="w-10 h-10 bg-black dark:bg-white text-white dark:text-black active:scale-95 transition-all duration-300 text-2xl font-black touch-manipulation flex items-center justify-center border-2 border-black dark:border-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            <ul className="flex flex-col gap-6">
+              <li>
+                <a
+                  href="https://kilianbalaguer-portfolio.vercel.app"
+                  className="block text-2xl font-black hover:translate-x-2 transition-transform"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Portfolio <BsArrowRight className="inline text-base" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://kilianbalaguer-blog.vercel.app"
+                  className="block text-2xl font-black hover:translate-x-2 transition-transform"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Blog <BsArrowRight className="inline text-base" />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
